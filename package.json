@@ -1,7 +1,7 @@
 {
   "name": "irflow-timeline",
   "version": "1.0.13",
-  "description": "SQLite-backed DFIR workspace for macOS. Large forensic datasets, native artifacts, AI application histories, and OS activity telemetry become searchable timelines with source provenance.",
+  "description": "SQLite-backed DFIR workspace for macOS and Linux. Large forensic datasets, native artifacts, AI application histories, and OS activity telemetry become searchable timelines with source provenance.",
   "main": "electron/main.js",
   "author": "DFIR Community",
   "license": "Apache-2.0",
@@ -18,6 +18,8 @@
     "dist": "npm run bundle:tools && npm run build:renderer && electron-builder --config electron-builder.config.cjs --mac",
     "dist:release": "npm run dist",
     "dist:smoke": "npm run bundle:tools && npm run build:renderer && SKIP_NOTARIZE=1 CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --config electron-builder.config.cjs --mac",
+    "dist:linux": "npm run bundle:tools && npm run build:renderer && electron-builder --config electron-builder.config.cjs --linux --publish never",
+    "dist:linux:dir": "npm run bundle:tools && npm run build:renderer && electron-builder --config electron-builder.config.cjs --linux --dir --publish never",
     "dist:dmg": "npm run bundle:tools && npm run build:renderer && electron-builder --config electron-builder.config.cjs --mac dmg",
     "dist:universal": "npm run bundle:tools && npm run build:renderer && electron-builder --config electron-builder.config.cjs --mac --universal",
     "rebuild": "electron-rebuild -f -w better-sqlite3",

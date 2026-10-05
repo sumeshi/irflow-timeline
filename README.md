@@ -2,13 +2,13 @@
 
 ![IRFlow Timeline home screen — capability launcher with Process Inspector, Lateral Movement, Persistence, Sigma, Collect AI Artifacts, Master File Table, USN Journal, and Open & Explore](assets/IRFlow-Timeline-Home.png)
 
-Native macOS forensic timeline analysis. Import, search, and investigate EVTX, CSV, XLSX, Plaso, `$MFT`, `$J`, and local AI assistant artifacts — with **AI Secret Hunt** and the analytics DFIR professionals actually need. Built on Electron + SQLite to handle millions of rows without breaking a sweat.
+Desktop forensic timeline analysis for macOS and Linux. Import, search, and investigate EVTX, CSV, XLSX, Plaso, `$MFT`, `$J`, and local AI assistant artifacts — with **AI Secret Hunt** and the analytics DFIR professionals actually need. Built on Electron + SQLite to handle millions of rows without breaking a sweat.
 
 Inspired by Eric Zimmerman's Timeline Explorer for Windows.
 
 ### Key Features
 
-- **AI Artifacts** — Collect local AI history from Claude Code, Codex, Grok Build, ChatGPT Desktop, Gemini CLI, Cursor, Copilot, Windsurf, and Continue into one timeline tab; **ChatGPT Computer History** for macOS interaction telemetry; **AI Secret Hunt** for exposed keys, tokens, and credentials
+- **AI Artifacts** — Collect local AI history from Claude Code, Codex, Grok Build, ChatGPT Desktop, Gemini CLI, Cursor, Copilot, Windsurf, and Continue into one timeline tab; **ChatGPT Computer History** for macOS interaction telemetry (macOS only); **AI Secret Hunt** for exposed keys, tokens, and credentials
 - **Raw NTFS Artifact Import** — Direct ingestion of `$MFT` and `$UsnJrnl` (`$J`) with full path reconstruction, SI/FN timestamps, and change reason mapping
 - **Ransomware Analytics** — Automated impact analysis from `$MFT` data: bulk rename detection, entropy-based extension analysis, ransom note identification, and temporal clustering
 - **VirusTotal Enrichment** — IOC matching with bulk VT lookups, malware family extraction, verdict badges, relationship pivoting, and local caching
@@ -20,12 +20,26 @@ Inspired by Eric Zimmerman's Timeline Explorer for Windows.
 
 For the full feature list and documentation, visit the **[IRFlow Timeline Docs](https://r3nzsec.github.io/irflow-timeline/)**.
 
+## Download
+
+Download prebuilt Linux packages from [GitHub Releases](../../releases). Linux release assets target x86_64 and include an AppImage and a Debian package. Ubuntu 24.04 is the verified Linux environment. AppImage launch may require FUSE 2 (`libfuse2t64` on Ubuntu 24.04); use the Debian package if FUSE is unavailable. Older distributions and Linux arm64 are unverified.
+
+```bash
+# From the directory containing the downloaded AppImage
+chmod +x ./IRFlow-Timeline-*-x86_64.AppImage
+./IRFlow-Timeline-*-x86_64.AppImage
+
+# Or install the downloaded Debian package
+sudo apt install ./IRFlow-Timeline-*-amd64.deb
+```
+
+After the Linux release workflow is merged, pushing a version-matching `v` tag builds and uploads these packages. You can also manually run that workflow for an existing matching tag that contains the Linux build and release workflow. In-app automatic updates are not configured for Linux.
+
 ## Building from Source
 
 **Prerequisites (for developers only):**
-- Node.js 22.14+: `brew install node`
-- Xcode CLI tools: `xcode-select --install` (for native module compilation)
-- macOS 12+ (Monterey or later)
+- Node.js 22.14 or newer and npm
+- macOS 12+ with Xcode command-line tools, or Linux x86_64 with build tools, Python 3, curl, and unzip
 
 ```bash
 git clone https://github.com/r3nzsec/irflow-timeline.git
@@ -44,6 +58,36 @@ npm run dist:universal
 ```
 
 Output in `release/`.
+
+### Linux
+
+On Ubuntu 24.04 x86_64, install the build and Electron runtime dependencies before building:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y build-essential python3 curl unzip git \
+  libgtk-3-0 libnss3 libasound2t64 libgbm1 libxss1 libxtst6 libxshmfence1
+
+git clone https://github.com/r3nzsec/irflow-timeline.git
+cd irflow-timeline
+npm ci
+npm run dist:linux
+```
+
+`npm run dist:linux` creates AppImage and Debian packages in `release/`. For an unpacked directory useful during development, run `npm run dist:linux:dir`. `build.sh` is a macOS-only helper; use the npm commands above on Linux. Linux arm64 bundling is configured but unverified. These npm commands create local artifacts; in-app automatic updates are not configured.
+
+Launch the AppImage with:
+
+```bash
+chmod +x release/*.AppImage
+./release/*.AppImage
+```
+
+Or install the Debian package with:
+
+```bash
+sudo apt install ./release/*.deb
+```
 
 ## Credits & Acknowledgments
 

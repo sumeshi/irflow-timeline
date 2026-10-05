@@ -40,6 +40,13 @@ const config = {
     entitlements: "entitlements.mac.plist",
     entitlementsInherit: "entitlements.mac.plist",
   },
+  linux: {
+    category: "Utility",
+    icon: "assets/icon.svg",
+    maintainer: "sumeshi <sumeshi@users.noreply.github.com>",
+    publish: null,
+    target: ["AppImage", "deb"],
+  },
   afterSign: "scripts/notarize.js",
   // Notarizes + staples the DMG itself. This must run as artifactBuildCompleted:
   // electron-builder creates the DMG blockmap before this hook and writes
